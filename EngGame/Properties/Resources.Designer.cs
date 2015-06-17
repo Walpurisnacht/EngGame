@@ -130,16 +130,6 @@ namespace EngGame.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap gif_firework {
-            get {
-                object obj = ResourceManager.GetObject("gif_firework", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap gw_ant {
             get {
                 object obj = ResourceManager.GetObject("gw_ant", resourceCulture);
@@ -713,16 +703,6 @@ namespace EngGame.Properties {
         internal static System.Drawing.Bitmap gw_zebra {
             get {
                 object obj = ResourceManager.GetObject("gw_zebra", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap spr_explosion {
-            get {
-                object obj = ResourceManager.GetObject("spr_explosion", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

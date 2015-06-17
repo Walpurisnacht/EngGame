@@ -74,29 +74,26 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="bin\Debug\UTM KARATE.TTF" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="Resources\UTM COOKIES.TTF" />
-    <None Include="Resources\UTM FACEBOOKB K&amp;T.TTF" />
-    <None Include="Resources\UTM FACEBOOKK&amp;TBOLDITALIC.TTF" />
-    <None Include="Resources\UTM FACEBOOKR K&amp;T.TTF" />
-    <None Include="Resources\UTMFACEBOOKK&amp;TITALIC.TTF" />
+    <None Include="Resources\UTM KARATE.TTF" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -303,15 +300,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\Debug\Audio\main.wav" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\a06f92ce0c0eee1e5315c16494da5b26.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\explosionFull.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\tumblr_mney5aJkmu1s5jjtzo1_r1_500.gif" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\GrabWordGlow.png" />

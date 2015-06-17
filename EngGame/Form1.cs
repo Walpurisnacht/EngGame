@@ -17,13 +17,9 @@ namespace EngGame
 {
     public partial class Form1 : Form
     {
-        private bool _visibility;
-        private ArrayList _gwdata = new ArrayList();
-        private List<GrabWordData> _gwrnd = new List<GrabWordData>();
         private PrivateFontCollection pfc = new PrivateFontCollection();
         private SoundPlayer _player;
         private StringFormat _format = new StringFormat();
-        private Form _gwform = new Form();
         #region ToolTips
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -64,23 +60,13 @@ namespace EngGame
                 return cp;
             }
         } 
-        private void AllRandomQuestion()
-        {
-            Random r = new Random();
-            while(_gwrnd.Count != 30)
-            {
-                int n = r.Next(_gwdata.Count);
-                if (!_gwrnd.Contains(_gwdata[n])) _gwrnd.Add((GrabWordData)_gwdata[n]);
-            }
-        }
-
         #endregion
         public Form1()
         {
             InitCustomFont();
             InitializeComponent();
         }
-
+        #region Main Events
         private void Screen_Load(object sender, EventArgs e)
         {
             Form f = (Form) sender;
@@ -90,40 +76,9 @@ namespace EngGame
 
             _player = new SoundPlayer(Properties.Resources.aud_main);
             _player.PlayLooping();
-            #region Data Import
-            try
-            {
-                StreamReader _tr = new StreamReader(@"Dictionary\vocabulary.input");
-
-                while (!_tr.EndOfStream)
-                {
-                    string _tmp = _tr.ReadLine();
-                    string[] _split;
-                    _split = _tmp.Split('|');
-
-                    GrabWordData _gwtmp = new GrabWordData();
-                    _gwtmp.Name = _split[0];
-                    _gwtmp.Link = _split[1];
-
-                    _gwdata.Add(_gwtmp);
-                }
-
-
-                //MessageBox.Show(_gwdata.Count.ToString()); //input count
-            }
-            catch (Exception ex)
-            { MessageBox.Show(ex.ToString()); }
-            finally
-            { } //MessageBox.Show("Import completed!"); }
-            #endregion
-
-
         }
-
-    #region Main Events
         private void Form_Paint(object sender, PaintEventArgs e)
     {
-        if (_visibility) _player.PlaySync();
         Graphics g = e.Graphics;
         //g.TranslateTransform(Screen.PrimaryScreen.Bounds.Width / 2, 0);
         //var f = new Font((FontFamily)pfc.Families[0],_Title.Font.Size);
@@ -155,8 +110,6 @@ namespace EngGame
     
     private void GW_Click(object sender, EventArgs e)
     {
-        _visibility = false;
-        //if (!_visibility) _player.Stop();
         Form2 _GWform = new Form2(_player);
         _GWform.Show();
         this.Close();
@@ -178,7 +131,6 @@ namespace EngGame
         }
     }
     #endregion
-
     }
     public class GrabWordData
     {
@@ -291,5 +243,21 @@ namespace EngGame
             _Main.Show();
             this.Close();
         }
+        private void GWE_Enter(object sender, EventArgs e)  {Cursor = Cursors.Hand;}
+        private void GWE_Leave(object sender, EventArgs e)  {Cursor = Cursors.Default;}
+        private void GW_Title(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            _format.LineAlignment = StringAlignment.Center;
+            _format.Alignment = StringAlignment.Center;
+
+            FontFamily ff = pfc.Families[0];
+            using (Font f = new Font(ff, 50))
+            {
+                g.DrawString("Grab the WORD", f, Brushes.LightSlateGray, new PointF(Screen.PrimaryScreen.Bounds.Width / 2 + 3, Screen.PrimaryScreen.Bounds.Height / 10 + 3), _format);
+                g.DrawString("Grab the WORD", f, Brushes.Coral, new PointF(Screen.PrimaryScreen.Bounds.Width / 2, Screen.PrimaryScreen.Bounds.Height / 10), _format);
+            }
+        }
+
     }
 }
