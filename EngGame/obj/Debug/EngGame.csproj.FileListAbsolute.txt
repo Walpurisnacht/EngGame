@@ -1,0 +1,9 @@
+c:\users\admin\documents\visual studio 2013\Projects\EngGame\EngGame\bin\Debug\EngGame.exe.config
+c:\users\admin\documents\visual studio 2013\Projects\EngGame\EngGame\bin\Debug\EngGame.exe
+c:\users\admin\documents\visual studio 2013\Projects\EngGame\EngGame\bin\Debug\EngGame.pdb
+c:\users\admin\documents\visual studio 2013\Projects\EngGame\EngGame\obj\Debug\EngGame.csprojResolveAssemblyReference.cache
+c:\users\admin\documents\visual studio 2013\Projects\EngGame\EngGame\obj\Debug\EngGame.Properties.Resources.resources
+c:\users\admin\documents\visual studio 2013\Projects\EngGame\EngGame\obj\Debug\EngGame.csproj.GenerateResource.Cache
+c:\users\admin\documents\visual studio 2013\Projects\EngGame\EngGame\obj\Debug\EngGame.exe
+c:\users\admin\documents\visual studio 2013\Projects\EngGame\EngGame\obj\Debug\EngGame.pdb
+C:\Users\Admin\documents\visual studio 2013\Projects\EngGame\EngGame\obj\Debug\EngGame.Form1.resources
