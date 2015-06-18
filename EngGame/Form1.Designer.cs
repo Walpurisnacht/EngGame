@@ -124,14 +124,15 @@
             int bdist = _buttonsize.Width + ((System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width - 3 * _buttonsize.Width) / 3);
 
             this.DoubleBuffered = true;
+            this.AllowTransparency = true;
 
             this._GWExit = new System.Windows.Forms.Button();
             this._Frame_1 = new System.Windows.Forms.PictureBox();
             this._Frame_2 = new System.Windows.Forms.PictureBox();
             this._Frame_3 = new System.Windows.Forms.PictureBox();
-            this._Label_1 = new System.Windows.Forms.Button();
-            this._Label_2 = new System.Windows.Forms.Button();
-            this._Label_3 = new System.Windows.Forms.Button();
+            this._Label_1 = new SelectButton();
+            this._Label_2 = new SelectButton();
+            this._Label_3 = new SelectButton();
             ((System.ComponentModel.ISupportInitialize)(this._Frame_1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._Frame_2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._Frame_3)).BeginInit();
@@ -148,12 +149,17 @@
             //
             // Label 1
             //
-            this._Label_1.Location = new System.Drawing.Point(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width - _boxsize.Width, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height * 3 / 4);
+            this._Label_1.Location = new System.Drawing.Point(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width
+                - _buttonsize.Width, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height * 3 / 4);
             this._Label_1.Size = _buttonsize;
-            //this._Label_1.Text = "SAMPLE";
+            this._Label_1.Text = "SAMPLE";
             this._Label_1.Font = _deffont;
             this._Label_1.BackColor = System.Drawing.Color.Transparent;
             this._Label_1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this._Label_1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this._Label_1.BackgroundImage = Properties.Resources.button_yellow;
+            this._Label_1.Checked = false;
+            
 
             //
             // Label 2
@@ -164,6 +170,9 @@
             this._Label_2.Font = _deffont;
             this._Label_2.BackColor = System.Drawing.Color.Transparent;
             this._Label_2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this._Label_2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this._Label_2.BackgroundImage = Properties.Resources.button_yellow;
+            this._Label_2.Checked = false;
 
             //
             // Label 3
@@ -174,12 +183,15 @@
             this._Label_3.Font = _deffont;
             this._Label_3.BackColor = System.Drawing.Color.Transparent;
             this._Label_3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this._Label_3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this._Label_3.BackgroundImage = Properties.Resources.button_yellow;
+            this._Label_3.Checked = false;
 
             //
             // Frame 1
             //
             this._Frame_1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this._Frame_1.Location = new System.Drawing.Point(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width - _boxsize.Width, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height / 4);
+            this._Frame_1.Location = new System.Drawing.Point(- _boxsize.Width, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height / 4);
             //this._Frame_1.Image = Properties.Resources.gw_apple;
             this._Frame_1.Size = _boxsize;
 
@@ -226,11 +238,13 @@
             this.Controls.Add(_Label_2);
             this.Controls.Add(_Label_3);
 
+            //Event
             this.Load += new System.EventHandler(GW_Load);
             this._GWExit.Click += new System.EventHandler(GW_Exit);
             this._GWExit.MouseEnter += new System.EventHandler(GWE_Enter);
             this._GWExit.MouseLeave += new System.EventHandler(GWE_Leave);
             this.Paint += new System.Windows.Forms.PaintEventHandler(GW_Title);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(GW_Animation);
             ((System.ComponentModel.ISupportInitialize)(this._Frame_1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._Frame_2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._Frame_3)).EndInit();
@@ -244,12 +258,11 @@
         private System.Windows.Forms.PictureBox _Frame_1;
         private System.Windows.Forms.PictureBox _Frame_2;
         private System.Windows.Forms.PictureBox _Frame_3;
-        private System.Windows.Forms.Button _Label_1;
-        private System.Windows.Forms.Button _Label_2;
-        private System.Windows.Forms.Button _Label_3;
+        private SelectButton _Label_1;
+        private SelectButton _Label_2;
+        private SelectButton _Label_3;
 
 
     }
-
 }
 

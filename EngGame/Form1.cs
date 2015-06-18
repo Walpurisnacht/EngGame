@@ -132,6 +132,10 @@ namespace EngGame
     }
     #endregion
     }
+    public partial class SelectButton : System.Windows.Forms.Button
+    {
+        public bool Checked;
+    }
     public class GrabWordData
     {
         public string Name { get; set; }
@@ -145,11 +149,38 @@ namespace EngGame
         private StringFormat _format = new StringFormat();
         private SoundPlayer _player;
         #region ToolTips
+        private void Data_Import()
+        {
+            try
+            {
+                StreamReader _tr = new StreamReader(@"Dictionary\vocabulary.input");
+
+                while (!_tr.EndOfStream)
+                {
+                    string _tmp = _tr.ReadLine();
+                    string[] _split;
+                    _split = _tmp.Split('|');
+
+                    GrabWordData _gwtmp = new GrabWordData();
+                    _gwtmp.Name = _split[0];
+                    _gwtmp.Link = _split[1];
+
+                    _gwdata.Add(_gwtmp);
+                }
+
+
+                //MessageBox.Show(_gwdata.Count.ToString()); //input count
+            }
+            catch (Exception ex)
+            { MessageBox.Show(ex.ToString()); }
+            finally
+            { } //MessageBox.Show("Import completed!"); }
+        }
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == Keys.Escape)
             {
-                this.Close();
+                Application.Exit();
                 return true;
             }
             return base.ProcessCmdKey(ref msg, keyData);
@@ -207,35 +238,16 @@ namespace EngGame
             _player.PlayLooping();
             Form f = (Form)sender;
 
-            #region Data Import
-            try
-            {
-                StreamReader _tr = new StreamReader(@"Dictionary\vocabulary.input");
+            Data_Import();
 
-                while (!_tr.EndOfStream)
-                {
-                    string _tmp = _tr.ReadLine();
-                    string[] _split;
-                    _split = _tmp.Split('|');
+            AllRandomQuestion();
 
-                    GrabWordData _gwtmp = new GrabWordData();
-                    _gwtmp.Name = _split[0];
-                    _gwtmp.Link = _split[1];
-
-                    _gwdata.Add(_gwtmp);
-                }
-
-
-                //MessageBox.Show(_gwdata.Count.ToString()); //input count
-            }
-            catch (Exception ex)
-            { MessageBox.Show(ex.ToString()); }
-            finally
-            { } //MessageBox.Show("Import completed!"); }
-            #endregion
-
-            FontFamily ff = pfc.Families[1];
+            FontFamily ff = pfc.Families[pfc.Families.Length-1];
             _GWExit.Font = new Font(ff, 15);
+            //try {_Label_1.Image = Image.FromFile(@_gwrnd[0].Link);}
+            //catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+            
+
         }
         private void GW_Exit(object sender, EventArgs e)
         {
@@ -257,6 +269,11 @@ namespace EngGame
                 g.DrawString("Grab the WORD", f, Brushes.LightSlateGray, new PointF(Screen.PrimaryScreen.Bounds.Width / 2 + 3, Screen.PrimaryScreen.Bounds.Height / 10 + 3), _format);
                 g.DrawString("Grab the WORD", f, Brushes.Coral, new PointF(Screen.PrimaryScreen.Bounds.Width / 2, Screen.PrimaryScreen.Bounds.Height / 10), _format);
             }
+        }
+        private void GW_Animation(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+
         }
 
     }
