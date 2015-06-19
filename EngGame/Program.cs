@@ -31,7 +31,7 @@ namespace EngGame
             ShowInTaskbar = false;
             Visible = false;
 
-            Form1 _Main = new Form1();
+            MainForm _Main = new MainForm();
             _Main.Show();
         }
     }

@@ -756,5 +756,15 @@ namespace EngGame.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] UTM_NGHA_01 {
+            get {
+                object obj = ResourceManager.GetObject("UTM_NGHA_01", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

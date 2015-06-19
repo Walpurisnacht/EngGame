@@ -94,6 +94,7 @@
     </Compile>
     <None Include="Resources\UTM COOKIES.TTF" />
     <None Include="Resources\UTM KARATE.TTF" />
+    <None Include="Resources\UTM NGHA 01.TTF" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

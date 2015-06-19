@@ -15,7 +15,7 @@ using System.Media;
 
 namespace EngGame
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private PrivateFontCollection pfc = new PrivateFontCollection();
         private SoundPlayer _player;
@@ -48,7 +48,16 @@ namespace EngGame
 
             pfc.AddMemoryFont(_data, _fontlength);
 
+            _fontlength = Properties.Resources.UTM_NGHA_01.Length;
+            _fontdata = Properties.Resources.UTM_NGHA_01;
+            _data = Marshal.AllocCoTaskMem(_fontlength);
+            Marshal.Copy(_fontdata, 0, _data, _fontlength);
+
+            pfc.AddMemoryFont(_data, _fontlength);
+
             Marshal.FreeCoTaskMem(_data);
+            //MessageBox.Show(pfc.Families[0].Name + pfc.Families[1].Name + pfc.Families[2].Name); //Cookies Karate NH1
+            //Application.Exit();
         }
         protected override CreateParams CreateParams
         {
@@ -61,7 +70,7 @@ namespace EngGame
             }
         } 
         #endregion
-        public Form1()
+        public MainForm()
         {
             InitCustomFont();
             InitializeComponent();
@@ -110,44 +119,45 @@ namespace EngGame
     
     private void GW_Click(object sender, EventArgs e)
     {
-        Form2 _GWform = new Form2(_player);
+        GrabTheWordForm _GWform = new GrabTheWordForm(_player);
         _GWform.Show();
         this.Close();
     }
-    private void GW_Paint(object sender, PaintEventArgs e)
-    {
-        Graphics g = e.Graphics;
-        //g.TranslateTransform(Screen.PrimaryScreen.Bounds.Width / 2, 0);
-        //var f = new Font((FontFamily)pfc.Families[0],_Title.Font.Size);
-
-        _format.LineAlignment = StringAlignment.Center;
-        _format.Alignment = StringAlignment.Center;
-
-        FontFamily ff = pfc.Families[0];
-        using (Font f = new Font(ff, 50))
-        {
-            g.DrawString("Grab the word", f, Brushes.LightSlateGray, new PointF(Screen.PrimaryScreen.Bounds.Width / 2 + 3, Screen.PrimaryScreen.Bounds.Height / 10 + 3), _format);
-            g.DrawString("Grab the word", f, Brushes.White, new PointF(Screen.PrimaryScreen.Bounds.Width / 2, Screen.PrimaryScreen.Bounds.Height / 10), _format);
-        }
-    }
     #endregion
     }
-    public partial class SelectButton : System.Windows.Forms.Button
+    public partial class SelectButton : Button
     {
-        public bool Checked;
+        public bool Checked { get; set; }
+    }
+    public partial class SelectPictureBox : PictureBox
+    {
+        public bool Checked { get; set; }
     }
     public class GrabWordData
     {
         public string Name { get; set; }
         public string Link { get; set; }
     }
-    public partial class Form2 : Form
+    public partial class GrabTheWordForm : Form
     {
+        private Size _boxsize = new Size(Screen.PrimaryScreen.Bounds.Height / 3, Screen.PrimaryScreen.Bounds.Height / 3);
+        private Size _buttonsize = new Size(Screen.PrimaryScreen.Bounds.Width / 5, Screen.PrimaryScreen.Bounds.Height / 10);
+        private Font _deffont = new Font("Times New Roman", 20f);
+        private int dist;
+        private int bdist;
+
         private ArrayList _gwdata = new ArrayList();
         private List<GrabWordData> _gwrnd = new List<GrabWordData>();
+        private List<String> _gwlabel = new List<String>();
+        private int _cnt;
         private PrivateFontCollection pfc = new PrivateFontCollection();
         private StringFormat _format = new StringFormat();
         private SoundPlayer _player;
+        private List<SelectButton> _blist = new List<SelectButton>();
+        private Queue<SelectPictureBox> _pqueue = new Queue<SelectPictureBox>();
+        
+        private String _cur;
+        private int _curpts;
         #region ToolTips
         private void Data_Import()
         {
@@ -203,7 +213,16 @@ namespace EngGame
 
             pfc.AddMemoryFont(_data, _fontlength);
 
+            _fontlength = Properties.Resources.UTM_NGHA_01.Length;
+            _fontdata = Properties.Resources.UTM_NGHA_01;
+            _data = Marshal.AllocCoTaskMem(_fontlength);
+            Marshal.Copy(_fontdata, 0, _data, _fontlength);
+
+            pfc.AddMemoryFont(_data, _fontlength);
+
             Marshal.FreeCoTaskMem(_data);
+            //MessageBox.Show(pfc.Families[0].Name + pfc.Families[1].Name + pfc.Families[2].Name); //DS Cookies Karate
+            //Application.Exit();
         }
         protected override CreateParams CreateParams
         {
@@ -218,15 +237,58 @@ namespace EngGame
         private void AllRandomQuestion()
         {
             Random r = new Random();
-            while (_gwrnd.Count != 30)
+            while (_gwrnd.Count != _gwdata.Count)
             {
                 int n = r.Next(_gwdata.Count);
                 if (!_gwrnd.Contains(_gwdata[n])) _gwrnd.Add((GrabWordData)_gwdata[n]);
             }
         }
-
+        private void ReloadButton()
+        {
+            foreach (SelectButton k in _blist)
+            { 
+                k.BackgroundImage = Properties.Resources.button_yellow;
+                k.Checked = false;
+            }
+        }
+        private void ResetPictureBox()
+        {
+            _Frame_1.Location = new Point(-_boxsize.Width, Screen.PrimaryScreen.Bounds.Height / 4);
+            _Frame_2.Location = new Point(_Frame_1.Location.X - dist, Screen.PrimaryScreen.Bounds.Height / 4);
+            _Frame_3.Location = new Point(_Frame_2.Location.X - dist, Screen.PrimaryScreen.Bounds.Height / 4);
+        }
+        private void PointUp()
+        {
+            _curpts = Int32.Parse(_GWScore.Text);
+            _ScoreTimer.Start();
+        }
+        private void InitLabel(int _cnt)
+        {
+            try
+            {
+                List<String> _tmp = new List<string>();
+                Random r = new Random();
+                while (_tmp.Count != 3)
+                {
+                    int n = r.Next(_cnt, _cnt + 3);
+                    if (!_tmp.Contains(_gwrnd[n].Name)) _tmp.Add(_gwrnd[n].Name);
+                }
+                _Label_1.Text = _tmp[0];
+                _Label_2.Text = _tmp[1];
+                _Label_3.Text = _tmp[2];
+            }
+            catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+            finally
+            {
+                //MessageBox.Show(_Label_1.Text + _Label_2.Text + _Label_3.Text);
+            }
+        }
+        private void ReloadPictureBox(PictureBox k)
+        {
+            k.Location = new Point(-_boxsize.Width, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height / 4);
+        }
         #endregion
-        public Form2(SoundPlayer _player)
+        public GrabTheWordForm(SoundPlayer _player)
         {
             this._player = _player;
             InitCustomFont();
@@ -238,43 +300,177 @@ namespace EngGame
             _player.PlayLooping();
             Form f = (Form)sender;
 
+            _cnt = 0;
+
             Data_Import();
 
             AllRandomQuestion();
 
-            FontFamily ff = pfc.Families[pfc.Families.Length-1];
-            _GWExit.Font = new Font(ff, 15);
+            _GWExit.Font = new Font(pfc.Families[1], 12);
+            _GWStart.Font = new Font(pfc.Families[1], 12);
+            _GWScore.Font = new Font(pfc.Families[2], 30);
             //try {_Label_1.Image = Image.FromFile(@_gwrnd[0].Link);}
             //catch (Exception ex) { MessageBox.Show(ex.ToString()); }
-            
-
         }
+        #region GWExit
         private void GW_Exit(object sender, EventArgs e)
         {
-            Form1 _Main = new Form1();
+            MainForm _Main = new MainForm();
             _Main.Show();
             this.Close();
         }
         private void GWE_Enter(object sender, EventArgs e)  {Cursor = Cursors.Hand;}
         private void GWE_Leave(object sender, EventArgs e)  {Cursor = Cursors.Default;}
+        #endregion
+        private void GWS_Enter(object sender, EventArgs e) { Cursor = Cursors.Hand; }
+        private void GWS_Leave(object sender, EventArgs e) { Cursor = Cursors.Default; }
+        private void GW_Start(object sender, EventArgs e)
+        {
+            //GrabTheWordForm.ActiveForm.Hide();
+            InitLabel(_cnt);
+            _GWTimer.Start();
+            //MessageBox.Show(_pqueue.Count.ToString());
+            #region Test
+            _Frame_1.Name = _gwrnd[_cnt].Name;
+            _Frame_1.Image = Image.FromFile(@_gwrnd[_cnt++].Link);
+            _Frame_2.Name = _gwrnd[_cnt].Name;
+            _Frame_2.Image = Image.FromFile(@_gwrnd[_cnt++].Link);
+            _Frame_3.Name = _gwrnd[_cnt].Name;
+            _Frame_3.Image = Image.FromFile(@_gwrnd[_cnt++].Link);
+            //_Label_1.Text = _gwrnd[_cnt].Name;
+            //_Label_2.Text = _gwrnd[++_cnt].Name;
+            //_Label_3.Text = _gwrnd[++_cnt].Name;
+            _cnt++;
+            //MessageBox.Show(_cnt.ToString());
+            if (_cnt >= 44) 
+            { 
+                MessageBox.Show("GAME OVER"); 
+                _GWTimer.Stop();
+                _GWExit.PerformClick();
+            }
+            #endregion
+            _GWTimer.Start();
+        }
+        private void GW_Tick(object sender, EventArgs e)
+        {
+            SelectPictureBox _tmp = _pqueue.Peek();
+            if (_tmp.Location.X <= //768)
+                Screen.PrimaryScreen.Bounds.Width)
+            {
+                foreach (SelectPictureBox k in _pqueue)
+                    k.Location = new Point(k.Location.X + 3, k.Location.Y);
+            }
+            else
+            {
+                ReloadPictureBox(_tmp);
+                _pqueue.Dequeue();
+                _pqueue.Enqueue(_tmp);
+            }
+        }
         private void GW_Title(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
             _format.LineAlignment = StringAlignment.Center;
             _format.Alignment = StringAlignment.Center;
 
-            FontFamily ff = pfc.Families[0];
+            FontFamily ff = pfc.Families[1];
             using (Font f = new Font(ff, 50))
             {
                 g.DrawString("Grab the WORD", f, Brushes.LightSlateGray, new PointF(Screen.PrimaryScreen.Bounds.Width / 2 + 3, Screen.PrimaryScreen.Bounds.Height / 10 + 3), _format);
                 g.DrawString("Grab the WORD", f, Brushes.Coral, new PointF(Screen.PrimaryScreen.Bounds.Width / 2, Screen.PrimaryScreen.Bounds.Height / 10), _format);
             }
         }
-        private void GW_Animation(object sender, PaintEventArgs e)
+        private void GW_Animation(object sender, PaintEventArgs e) //score draw
         {
             Graphics g = e.Graphics;
-
+            
         }
-
+        #region L1
+        private void L1_Click(object sender, EventArgs e)
+        {
+            ReloadButton();
+            _Label_1.Checked = !_Label_1.Checked;
+            if (_Label_1.Checked) _Label_1.BackgroundImage = Properties.Resources.button_blue;
+            _cur = _Label_1.Text;
+        }
+        private void L1_Enter(object sender, EventArgs e) { Cursor = Cursors.Hand; }
+        private void L1_Leave(object sender, EventArgs e) { Cursor = Cursors.Default; }
+        #endregion
+        #region L2
+        private void L2_Click(object sender, EventArgs e)
+        {
+            ReloadButton();
+            _Label_2.Checked = !_Label_2.Checked;
+            if (_Label_2.Checked) _Label_2.BackgroundImage = Properties.Resources.button_blue;
+            _cur = _Label_2.Text;
+        }
+        private void L2_Enter(object sender, EventArgs e) { Cursor = Cursors.Hand; }
+        private void L2_Leave(object sender, EventArgs e) { Cursor = Cursors.Default; }
+        #endregion
+        #region L3
+        private void L3_Click(object sender, EventArgs e)
+        {
+            ReloadButton();
+            _Label_3.Checked = !_Label_3.Checked;
+            if (_Label_3.Checked) _Label_3.BackgroundImage = Properties.Resources.button_blue;
+            _cur = _Label_3.Text;
+        }
+        private void L3_Enter(object sender, EventArgs e) { Cursor = Cursors.Hand; }
+        private void L3_Leave(object sender, EventArgs e) { Cursor = Cursors.Default; }
+        #endregion
+        #region F1
+        private void F1_Click(object sender, EventArgs e)
+        {
+            String _res = "";
+            SelectPictureBox _tmp = (SelectPictureBox)sender;
+            foreach (SelectButton k in _blist)
+            {
+                if (k.Checked) { _res = k.Text; break; }
+            }
+            if (_tmp.Name == _res) { MessageBox.Show("CORRECT"); PointUp(); _GWStart.PerformClick(); }
+            else { MessageBox.Show("WRONG!"); _GWStart.PerformClick(); }
+            ReloadButton();
+        }
+        private void F1_Enter(object sender, EventArgs e) { Cursor = Cursors.Hand; }
+        private void F1_Leave(object sender, EventArgs e) { Cursor = Cursors.Default; }
+        #endregion F1
+        #region F2
+        private void F2_Click(object sender, EventArgs e)
+        {
+            //GrabTheWordForm.ActiveForm.Hide();
+            String _res = "";
+            SelectPictureBox _tmp = (SelectPictureBox)sender;
+            foreach (SelectButton k in _blist)
+            {
+                if (k.Checked) { _res = k.Text; break; }
+            }
+            if (_tmp.Name == _res) { MessageBox.Show("CORRECT"); PointUp(); _GWStart.PerformClick(); }
+            else { MessageBox.Show("WRONG!"); _GWStart.PerformClick(); }
+            ReloadButton();
+        }
+        private void F2_Enter(object sender, EventArgs e) { Cursor = Cursors.Hand; }
+        private void F2_Leave(object sender, EventArgs e) { Cursor = Cursors.Default; }
+        #endregion F2
+        #region F3
+        private void F3_Click(object sender, EventArgs e)
+        {
+            String _res = "";
+            SelectPictureBox _tmp = (SelectPictureBox)sender;
+            foreach (SelectButton k in _blist)
+            {
+                if (k.Checked) { _res = k.Text; break; }
+            }
+            if (_tmp.Name == _res) { MessageBox.Show("CORRECT"); PointUp(); _GWStart.PerformClick(); }
+            else { MessageBox.Show("WRONG!"); _GWStart.PerformClick(); }
+            ReloadButton();
+        }
+        private void F3_Enter(object sender, EventArgs e) { Cursor = Cursors.Hand; }
+        private void F3_Leave(object sender, EventArgs e) { Cursor = Cursors.Default; }
+        #endregion F3
+        private void Score_Tick(object sender, EventArgs e)
+        {
+            _GWScore.Text = (Int32.Parse(_GWScore.Text) + 1).ToString();
+            if ((_curpts + 10) == Int32.Parse(_GWScore.Text)) _ScoreTimer.Stop();
+        }
     }
 }
